@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua Solução de Internet de Alta Velocidade</title>
+    <!-- Inclui o Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuração do Tailwind para usar fontes Inter -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Inclui a fonte Inter do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Favicon (opcional, adicione seu próprio ícone) -->
+    <link rel="icon" href="https://placehold.co/32x32/000000/FFFFFF?text=SITE" type="image/x-icon">
+    <style>
+        /* Estilos personalizados que podem complementar o Tailwind ou substituir comportamentos específicos */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d; /* Cor de fundo escura, como Starlink */
+            color: #ffffff; /* Cor do texto principal clara */
+            overflow-x: hidden; /* Evita rolagem horizontal indesejada */
+        }
+        /* Efeito de hover suave para botões */
+        .btn-primary {
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            background-color: #2c5282; /* Cor mais escura no hover */
+            transform: translateY(-2px); /* Pequeno efeito de levantamento */
+        }
+        /* Estilo para sobreposições de texto em imagens */
+        .overlay-text {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        /* Estilo para o spinner de carregamento */
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3); /* Borda mais clara */
+            border-top: 4px solid #ffffff; /* Branco sólido para o topo */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Estilo para o cartão de plano */
+        .plan-card {
+            background-color: #1a1a1a; /* Fundo mais escuro para o cartão */
+            border-radius: 0.75rem; /* Cantos levemente arredondados */
+            padding: 2.5rem; /* Espaçamento interno */
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Borda sutil */
+        }
+        .plan-card-title {
+            font-size: 1.5rem; /* Tamanho do título do cartão */
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+        }
+        .plan-card-subtitle {
+            font-size: 1rem;
+            color: #a0a0a0;
+            margin-bottom: 1.5rem;
+        }
+        .plan-card-price {
+            font-size: 3rem; /* Tamanho grande para o preço */
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1; /* Altura da linha para alinhar */
+            margin-bottom: 0.5rem;
+        }
+        .plan-card-monthly-text {
+            font-size: 1.25rem; /* Tamanho para "/mês" */
+            font-weight: 500;
+            color: #e0e0e0;
+        }
+        .plan-card-disclaimer {
+            font-size: 1rem;
+            color: #a0a0a0;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Cabeçalho (Header) -->
+    <header class="bg-black bg-opacity-70 fixed top-0 left-0 w-full z-50 shadow-md">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo ou Título do Site -->
+            <a href="#" class="text-white text-2xl font-bold rounded-md">
+                <img src="https://www.starlink.com/public-files/starlink_white_logo.webp" alt="Logo do Site" class="h-10 rounded-md">
+            </a>
+
+            <!-- Navegação para Desktop -->
+            <div class="hidden md:flex space-x-6">
+                <a href="#servicos" class="text-gray-300 hover:text-white transition duration-300 rounded-md p-2">Serviços</a>
+                <a href="#planos" class="text-gray-300 hover:text-white transition duration-300 rounded-md p-2">Planos</a>
+                <a href="#suporte" class="text-gray-300 hover:text-white transition duration-300 rounded-md p-2">Suporte</a>
+                <a href="#contato" class="text-gray-300 hover:text-white transition duration-300 rounded-md p-2">Contato</a>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition duration-300 btn-primary">
+                    Pedir Agora
+                </button>
+            </div>
+
+            <!-- Botão de Menu para Mobile -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-white focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Menu Mobile (oculto por padrão) -->
+        <div id="mobile-menu" class="md:hidden bg-black bg-opacity-90 py-4 hidden rounded-md">
+            <a href="#servicos" class="block text-gray-300 hover:text-white px-4 py-2 text-center rounded-md">Serviços</a>
+            <a href="#planos" class="block text-gray-300 hover:text-white px-4 py-2 text-center rounded-md">Planos</a>
+            <a href="#suporte" class="block text-gray-300 hover:text-white px-4 py-2 text-center rounded-md">Suporte</a>
+            <a href="#contato" class="block text-gray-300 hover:text-white px-4 py-2 text-center rounded-md">Contato</a>
+            <div class="text-center mt-4">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition duration-300 btn-primary">
+                    Pedir Agora
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Seção Principal (Hero Section) - Agora com verificação de disponibilidade -->
+    <section class="relative h-screen flex items-center justify-center text-center overflow-hidden bg-cover bg-center" style="background-image: url('https://www.starlink.com/public-files/residential_c_hero_d.webp');">
+        <div class="absolute inset-0 bg-black opacity-60"></div> <div class="relative z-10 p-6 max-w-4xl mx-auto rounded-lg">
+            <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-4 overlay-text">Internet de Alta Velocidade. Onde Você Estiver.</h1>
+            <p class="text-xl md:text-2xl text-gray-200 mb-8 overlay-text">Conectividade global revolucionária para residências e empresas.</p>
+
+            <!-- Seção de Verificação de Disponibilidade Integrada -->
+            <div class="w-full max-w-2xl mx-auto mt-8 p-4 rounded-lg">
+                <!-- Input e botão para uma aparência mais elegante e horizontal no desktop -->
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
+                    <input type="text" id="addressInput"
+                           class="flex-grow shadow-sm appearance-none border border-gray-600 rounded-full w-full md:w-auto py-3 px-6 text-gray-900 text-lg leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+                           placeholder="ENDEREÇO DE SERVIÇO">
+                    <button id="checkAvailabilityBtn"
+                            class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-xl transition duration-300 btn-primary flex items-center justify-center whitespace-nowrap">
+                        <span id="buttonText">PEDIR AGORA</span>
+                        <div id="loadingSpinner" class="loading-spinner ml-3 hidden"></div>
+                    </button>
+                </div>
+
+                <div id="resultContainer" class="mt-6 p-4 bg-gray-800 border border-gray-700 rounded-lg hidden text-left">
+                    <h2 class="text-xl font-semibold mb-2 text-gray-50">Resultado da Verificação:</h2>
+                    <p id="resultText" class="text-gray-200"></p>
+                </div>
+
+                <div id="messageBox" class="mt-4 p-3 bg-red-800 border border-red-700 text-red-200 rounded-lg hidden text-left" role="alert">
+                    <p id="messageText"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Recursos/Benefícios 1 -->
+    <section id="servicos" class="py-16 md:py-24 bg-cover bg-center" style="background-image: url('https://www.starlink.com/public-files/residential_c_feature5_d.webp');">
+        <div class="md:w-1/2 z-10"> <!-- z-10 para manter a imagem acima do overlay -->
+            </div>
+        <div class="absolute inset-0 bg-gray-900 opacity-80"></div> <!-- Adicionado overlay para visibilidade do texto -->
+        <div class="relative container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="md:w-1/2 text-center md:text-left z-10"> <!-- z-10 para manter o texto acima do overlay -->
+                <h2 class="text-4xl font-bold mb-4 overlay-text">Desempenho Sem Precedentes</h2>
+                <p class="text-lg text-gray-300 mb-6 overlay-text">Experimente latência ultra baixa e velocidades de download incríveis, mesmo nas áreas mais remotas.</p>
+                <ul class="list-disc list-inside text-lg text-gray-300 space-y-2 overlay-text">
+                    <li>Velocidades de até 200 Mbps</li>
+                    <li>Latência inferior a 30ms</li>
+                    <li>Ideal para streaming, jogos e trabalho remoto</li>
+                </ul>
+            </div>
+            <div class="md:w-1/2 z-10"> <!-- z-10 para manter a imagem acima do overlay -->
+                <img src="https://gemini.google.com/uploaded:image_aa8e97.png-366d4ca0-569b-4645-9f4e-0f41b3724a59" alt="Starlink e polo de carregamento solar" class="w-full h-auto object-cover rounded-lg shadow-lg">
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Recursos/Benefícios 2 (Alternativa) -->
+    <section class="py-16 md:py-24 bg-cover bg-center" style="background-image: url('https://www.starlink.com/public-files/residential_b_feature1_d.webp');">
+        <div class="absolute inset-0 bg-black opacity-60"></div> <!-- Adicionado overlay para visibilidade do texto -->
+        <div class="relative container mx-auto px-4 flex flex-col md:flex-row-reverse items-center justify-between gap-12">
+            <div class="md:w-1/2 text-center md:text-left z-10"> <!-- z-10 para manter o texto acima do overlay -->
+                <h2 class="text-4xl font-bold mb-4 overlay-text">Fácil de Configurar</h2>
+                <p class="text-lg text-gray-300 mb-6 overlay-text">Seu kit Starlink chega com tudo que você precisa para se conectar em minutos. Sem técnicos, sem complicações.</p>
+                <p class="text-lg text-gray-300 overlay-text">Basta conectar na energia, apontar para o céu e desfrutar de internet de alta qualidade.</p>
+            </div>
+           
+        </div>
+    </section>
+
+    <!-- Nova Seção de Planos (Integrada aqui) -->
+    <section id="planos" class="relative py-16 md:py-24 bg-cover bg-center text-center" style="background-image: url('https://www.starlink.com/public-files/residential_b_hero_d.webp');">
+        <div class="absolute inset-0 bg-black opacity-60"></div> <!-- Adicionado overlay para visibilidade do texto -->
+        <div class="relative container mx-auto px-4 z-10">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-12 overlay-text">ASSISTA A FILMES, FAÇA VIDEOCHAMADAS, JOGUE E MUITO MAIS</h2>
+
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-12">
+                <div class="plan-card w-full md:w-96">
+                    <div class="card-container">
+                        <div class="plan-card-title">RESIDENCIAL</div>
+                        <div class="plan-card-subtitle"> Indicado para residências </div>
+                        <div class="plan-card-price"> R$&nbsp;236<span class="plan-card-monthly-text">/mês</span></div>
+                        <div class="plan-card-disclaimer"> Dados ilimitados </div>
+                        </div>
+                </div>
+
+                </div>
+
+            <div class="flex flex-col md:flex-row justify-center gap-4 mt-8">
+                <button class="bg-transparent hover:bg-gray-800 text-white font-semibold py-3 px-8 rounded-full border-2 border-white transition duration-300">
+                    Exibir todos os planos
+                </button>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 btn-primary">
+                    PEDIR AGORA
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Chamada para Ação Final -->
+    <section class="py-16 md:py-24 bg-cover bg-center text-white text-center relative" style="background-image: url('https://www.starlink.com/public-files/residential_b_install_d.webp');">
+        <div class="absolute inset-0 bg-blue-700 opacity-[.08]"></div> <!-- Opacidade do overlay ajustada para 8% -->
+        <div class="relative container mx-auto px-4 z-10">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 overlay-text">Pronto para Mudar Sua Conexão?</h2>
+            <p class="text-xl md:text-2xl mb-8 overlay-text">Junte-se a milhões de usuários que já estão desfrutando da melhor internet via satélite.</p>
+            <button class="bg-white hover:bg-gray-200 text-blue-700 font-bold py-4 px-8 rounded-full text-lg shadow-xl transition duration-300">
+                Escolher Meu Plano
+            </button>
+        </div>
+    </section>
+
+    <!-- Rodapé (Footer) -->
+    <footer id="contato" class="bg-gray-800 py-12 text-gray-400">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8 text-lg">
+                <a href="#" class="hover:text-white transition duration-300 rounded-md p-2">Política de Privacidade</a>
+                <a href="#" class="hover:text-white transition duration-300 rounded-md p-2">Termos de Serviço</a>
+                <a href="#" class="hover:text-white transition duration-300 rounded-md p-2">Carreiras</a>
+                <a href="#" class="hover:text-white transition duration-300 rounded-md p-2">Perguntas Frequentes</a>
+            </div>
+            <p class="text-sm">&copy; 2023 Sua Solução de Internet. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Script JavaScript para o menu mobile e verificação de disponibilidade -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lógica para o menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Lógica para a verificação de disponibilidade
+            const addressInput = document.getElementById('addressInput');
+            const checkAvailabilityBtn = document.getElementById('checkAvailabilityBtn');
+            const resultContainer = document.getElementById('resultContainer');
+            const resultText = document.getElementById('resultText');
+            const buttonText = document.getElementById('buttonText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+
+            // Função para mostrar a caixa de mensagem com uma mensagem
+            function showMessageBox(message, type = 'info') {
+                messageText.textContent = message;
+                messageBox.classList.remove('hidden', 'bg-red-800', 'border-red-700', 'text-red-200', 'bg-green-800', 'border-green-700', 'text-green-200', 'bg-blue-800', 'border-blue-700', 'text-blue-200');
+                messageBox.classList.add('block');
+
+                if (type === 'error') {
+                    messageBox.classList.add('bg-red-800', 'border-red-700', 'text-red-200');
+                } else if (type === 'success') {
+                    messageBox.classList.add('bg-green-800', 'border-green-700', 'text-green-200');
+                } else { // default is info
+                    messageBox.classList.add('bg-blue-800', 'border-blue-700', 'text-blue-200');
+                }
+            }
+
+            // Função para esconder a caixa de mensagem
+            function hideMessageBox() {
+                messageBox.classList.add('hidden');
+            }
+
+            checkAvailabilityBtn.addEventListener('click', async function() {
+                const address = addressInput.value.trim();
+                hideMessageBox(); // Esconde qualquer mensagem anterior
+
+                if (!address) {
+                    showMessageBox('Por favor, digite um endereço para verificar a disponibilidade.', 'error');
+                    return;
+                }
+
+                // Simula o estado de carregamento
+                buttonText.textContent = 'Verificando...';
+                loadingSpinner.classList.remove('hidden');
+                checkAvailabilityBtn.disabled = true; // Desabilita o botão para evitar múltiplos cliques
+                resultContainer.classList.add('hidden'); // Esconde o resultado anterior
+
+                // Simulação de chamada de API com um atraso (como uma chamada de rede real)
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos
+
+                // Lógica de simulação da API
+                let availabilityStatus;
+                if (address.toLowerCase().includes('são paulo') || address.toLowerCase().includes('rio de janeiro')) {
+                    availabilityStatus = {
+                        status: 'disponível',
+                        message: 'Ótima notícia! A internet de alta velocidade está disponível AGORA na sua área. Faça seu pedido!'
+                    };
+                } else if (address.toLowerCase().includes('porto alegre')) {
+                    availabilityStatus = {
+                        status: 'capacidade',
+                        message: 'Sua área está com alta demanda. Faça seu pedido para garantir sua Starlink e reserve seu lugar!'
+                    };
+                } else if (address.toLowerCase().includes('belo horizonte')) {
+                    availabilityStatus = {
+                        status: 'pendente',
+                        message: 'Serviço pendente de cobertura ou aprovação regulatória. Previsão de disponibilidade: 3 a 6 meses.'
+                    };
+                } else {
+                    // Cobre qualquer outro endereço e sempre retorna positivo (disponível por padrão)
+                    availabilityStatus = {
+                        status: 'disponível',
+                        message: 'Parece que sua área tem cobertura! A internet de alta velocidade está disponível. Faça seu pedido!'
+                    };
+                }
+
+                // Exibe o resultado
+                resultText.textContent = availabilityStatus.message;
+                resultContainer.classList.remove('hidden');
+                if (availabilityStatus.status === 'disponível') {
+                    showMessageBox(availabilityStatus.message, 'success');
+                } else if (availabilityStatus.status === 'capacidade' || availabilityStatus.status === 'pendente') {
+                    showMessageBox(availabilityStatus.message, 'info');
+                } else {
+                    // Este bloco não será mais atingido devido à lógica acima que sempre retorna positivo.
+                    // Mas é mantido por segurança ou para futuras mudanças.
+                    showMessageBox(availabilityStatus.message, 'error');
+                }
+
+
+                // Restaura o botão e o spinner
+                buttonText.textContent = 'Verificar Disponibilidade';
+                loadingSpinner.classList.add('hidden');
+                checkAvailabilityBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
